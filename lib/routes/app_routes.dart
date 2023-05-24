@@ -1,0 +1,43 @@
+import 'package:car_parts/bindings/auth_binding.dart';
+import 'package:car_parts/bindings/car_binding.dart';
+import 'package:car_parts/controller/splash_binding.dart';
+import 'package:car_parts/ui/homepage_screen.dart';
+import 'package:car_parts/ui/login_screen.dart';
+import 'package:car_parts/ui/my_order_screen.dart';
+import 'package:car_parts/ui/my_profile.dart';
+import 'package:car_parts/ui/place_order.dart';
+import 'package:car_parts/ui/signup_screen.dart';
+import 'package:car_parts/ui/splash_page.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
+
+import 'app_routes_constant.dart';
+
+class Routes {
+  static final routes = [
+    GetPage(
+        name: RouteConstant.SIGINROUTE,
+        page: () => LoginScreen(),
+        binding: AuthBinding()),
+    GetPage(
+        name: RouteConstant.SIGNUPROUTE,
+        binding: AuthBinding(),
+        page: () => SignUpScreen()),
+    GetPage(
+        name: RouteConstant.INITIALROUTE,
+        page: () => SplashScreen(),
+        binding: SplashBinding()),
+    GetPage(
+        name: RouteConstant.HOMEROUTE,
+        binding: CarBinding(),
+        page: () => HomePageScreen()),
+    GetPage(
+        name: RouteConstant.myOrder,
+        binding: CarBinding(),
+        page: () => MyOrderscreen()),
+
+    GetPage(
+        name: RouteConstant.myProfile,
+        binding: AuthBinding(),
+        page: () => MyProfile()),
+  ];
+}
