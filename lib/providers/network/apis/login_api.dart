@@ -4,13 +4,21 @@ import '../api_endpoint.dart';
 import '../api_provider.dart';
 import '../api_request_reprensentable.dart';
 
-enum AuthType { login, signUp, myProfile, updateProfile }
+enum AuthType {
+  login,
+  signUp,
+  myProfile,
+  updateProfile,
+  forgetPassword,
+  changePassword
+}
 
 class AuthApi extends APIRequestRepresentable {
   final AuthType authType;
   String? name;
   String? email;
   String? phoneNumber;
+  String? otp;
   String? password;
   String? building;
   String? area;
@@ -25,6 +33,7 @@ class AuthApi extends APIRequestRepresentable {
       this.phoneNumber,
       this.email,
       this.password,
+      this.otp,
       this.building,
       this.area,
       this.alternateNumber,
@@ -44,11 +53,6 @@ class AuthApi extends APIRequestRepresentable {
           "phone": phoneNumber,
           "password": password,
           "cpassword": password,
-          "building": building,
-          "area": area,
-          "pincode": pincode,
-          "city": city,
-          "state": state,
           "alt_phone": alternateNumber
         };
       case AuthType.myProfile:
@@ -58,12 +62,22 @@ class AuthApi extends APIRequestRepresentable {
           "name": name,
           "email": email,
           "phone": phoneNumber,
-          "building": building,
-          "area": area,
-          "pincode": pincode,
-          "city": city,
-          "state": state,
-          "alt_phone":alternateNumber
+          "alt_phone": alternateNumber
+        };
+      case AuthType.forgetPassword:
+        return {
+          "phone": phoneNumber,
+        };
+      case AuthType.changePassword:
+        print({
+          "phone": phoneNumber,
+          "otp": otp,
+          "password": password,
+        });
+        return {
+          "phone": phoneNumber,
+          "otp": otp,
+          "password": password,
         };
     }
   }
@@ -88,6 +102,11 @@ class AuthApi extends APIRequestRepresentable {
           'token':
               SharedPreference().getString(AppConstants().authToken).toString()
         };
+      case AuthType.forgetPassword:
+        return {'Content-Type': 'application/json'};
+        break;
+      case AuthType.changePassword:
+        return {'Content-Type': 'application/json'};
     }
   }
 
@@ -101,6 +120,10 @@ class AuthApi extends APIRequestRepresentable {
       case AuthType.myProfile:
         return HTTPMethod.get;
       case AuthType.updateProfile:
+        return HTTPMethod.post;
+      case AuthType.forgetPassword:
+        return HTTPMethod.post;
+      case AuthType.changePassword:
         return HTTPMethod.post;
     }
   }
@@ -116,6 +139,10 @@ class AuthApi extends APIRequestRepresentable {
         return APIEndpoint.myProfileApi;
       case AuthType.updateProfile:
         return APIEndpoint.myProfileApi;
+      case AuthType.forgetPassword:
+        return APIEndpoint.forgetApi;
+      case AuthType.changePassword:
+        return APIEndpoint.changePasswordApi;
     }
   }
 

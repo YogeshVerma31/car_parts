@@ -24,7 +24,7 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Orders'),
+        title: const Text('My Profile'),
       ),
       body: SingleChildScrollView(
         child: Obx(() => authController.isLoading.value == true
@@ -32,19 +32,14 @@ class _MyProfileState extends State<MyProfile> {
                 backgroundColor: Colors.transparent,
                 color: Colors.blue,
               )
-            : Container(margin: const EdgeInsets.only(top: 10), child: signUpForm)),
+            : Container(
+                margin: const EdgeInsets.only(top: 10), child: signUpForm)),
       ),
     );
   }
 
   Widget get signUpForm => Column(
         children: [
-          CircleAvatar(
-              backgroundColor: Colors.orange,
-              child: Text(
-                authController.nameController.text.substring(0, 1),
-                style: const TextStyle(fontSize: 40.0),
-              )),
           Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10),
             child: CustomInputField(
@@ -54,15 +49,15 @@ class _MyProfileState extends State<MyProfile> {
                 readOnly: false),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
+            padding: const EdgeInsets.only(left: 10.0, right: 10),
             child: CustomInputField(
                 controller: authController.emailController,
                 title: "Email",
-                hint: "Enter Email Number",
+                hint: "Enter Email Address",
                 readOnly: false),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
+            padding: const EdgeInsets.only(left: 10.0, right: 10),
             child: CustomInputField(
                 controller: authController.phoneController,
                 title: "Phone Number",
@@ -72,60 +67,26 @@ class _MyProfileState extends State<MyProfile> {
           Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10),
             child: CustomInputField(
-                widget: Image.asset('images/whatsapp.png',color: Colors.green,width:30,),
+                widget: Image.asset(
+                  'images/whatsapp.png',
+                  color: Colors.green,
+                  width: 30,
+                ),
                 controller: authController.alternatePhoneController,
                 title: "Alternate Number",
                 hint: "Enter Alternate Number",
                 textInputType: TextInputType.phone,
                 readOnly: false),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
-            child: CustomInputField(
-                controller: authController.buildingController,
-                title: "Building",
-                hint: "Enter Building Number",
-                readOnly: false),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
-            child: CustomInputField(
-                controller: authController.areaController,
-                title: "Area",
-                hint: "Enter Area Number",
-                readOnly: false),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
-            child: CustomInputField(
-                controller: authController.pinCodeController,
-                title: "Pincode",
-                hint: "Enter Pincode Number",
-                readOnly: false),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10),
-            child: CustomInputField(
-                controller: authController.cityController,
-                title: "City",
-                hint: "Enter City",
-                readOnly: false),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10),
-            child: CustomInputField(
-                controller: authController.stateController,
-                title: "State",
-                hint: "Enter State",
-                readOnly: false),
-          ),
           Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: CustomButton(
                   isProgressBar: authController.isButtonLoading.value,
-                  label: 'Update Profile', onTap: () {
+                  label: 'Update Profile',
+                  onTap: () {
                     authController.checkSignUpdateValidation();
-              }, color: Colors.blue)),
+                  },
+                  color: Colors.blue)),
         ],
       );
 }

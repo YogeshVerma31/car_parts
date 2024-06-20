@@ -65,7 +65,7 @@ class SignUpScreen extends StatelessWidget {
               child: CustomInputField(
                   controller: authController.emailController,
                   title: "Email",
-                  hint: "Enter Email Number",
+                  hint: "Enter Email Address",
                   readOnly: false),
             ),
             Padding(
@@ -123,46 +123,47 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: authController.buildingController,
-                  title: "Building",
-                  hint: "Enter Building Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: authController.areaController,
-                  title: "Area",
-                  hint: "Enter Area Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: authController.pinCodeController,
-                  title: "Pincode",
-                  hint: "Enter Pincode Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: authController.cityController,
-                  title: "City",
-                  hint: "Enter City",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: authController.stateController,
-                  title: "State",
-                  hint: "Enter State",
-                  readOnly: false),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: authController.buildingController,
+            //       title: "Building",
+            //       hint: "Enter Building Number",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: authController.areaController,
+            //       title: "Area",
+            //       hint: "Enter Area Number",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: authController.pinCodeController,
+            //       title: "Pincode",
+            //       hint: "Enter Pincode Number",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: authController.cityController,
+            //       title: "City",
+            //       hint: "Enter City",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: authController.stateController,
+            //       title: "State",
+            //       hint: "Enter State",
+            //       readOnly: false),
+            // ),
+            SizedBox(height: 10,),
             Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

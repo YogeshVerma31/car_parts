@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:car_parts/data/model/login_model.dart';
 import 'package:car_parts/data/repository/auth_repository.dart';
 
@@ -15,26 +13,13 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<LoginModel>? signUp(
-      String phoneNumber,
-      String name,
-      String email,
-      String password,
-      String building,
-      String area,
-      String pincode,
-      String city,
-      String state,String alternateNumber) async {
+  Future<LoginModel>? signUp(String phoneNumber, String name, String email,
+      String password, String alternateNumber) async {
     final response = await AuthApi(
             name: name,
             phoneNumber: phoneNumber,
             email: email,
             password: password,
-            area: area,
-            building: building,
-            pincode: pincode,
-            city: city,
-            state: state,
             alternateNumber: alternateNumber,
             authType: AuthType.signUp)
         .request();
@@ -57,8 +42,7 @@ class AuthRepositoryImpl extends AuthRepository {
       String pincode,
       String city,
       String state,
-      String alternateNumber
-      ) async {
+      String alternateNumber) async {
     final response = await AuthApi(
             name: name,
             phoneNumber: phoneNumber,
@@ -72,5 +56,25 @@ class AuthRepositoryImpl extends AuthRepository {
             authType: AuthType.updateProfile)
         .request();
     return LoginModel.fromJson(response);
+  }
+
+  @override
+  Future<String> forgetPassword(String email) async {
+    final response =
+        await AuthApi(phoneNumber: email, authType: AuthType.forgetPassword)
+            .request();
+    return response['message'];
+  }
+
+  @override
+  Future<String>? changePassword(
+      String phone, String otp, String password) async {
+    final response = await AuthApi(
+            phoneNumber: phone,
+            otp: otp,
+            password: password,
+            authType: AuthType.changePassword)
+        .request();
+    return response['message'];
   }
 }

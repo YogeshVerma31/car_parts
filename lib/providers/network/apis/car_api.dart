@@ -8,6 +8,7 @@ import '../api_request_reprensentable.dart';
 
 class CarApi extends APIRequestRepresentable {
   bool isplaceOrder;
+  bool isAdList;
   String? id;
   String? name;
   String? phone;
@@ -32,6 +33,7 @@ class CarApi extends APIRequestRepresentable {
 
   CarApi(
       {required this.isplaceOrder,
+      required this.isAdList,
       this.id,
       this.name,
       this.phone,
@@ -60,8 +62,10 @@ class CarApi extends APIRequestRepresentable {
           'state': state,
           'pincode': pincode,
           'sdescr': desc,
-          'media': MultipartFile(File(image.path).readAsBytes(), filename: 'carImage'),
-          'media1': MultipartFile(File(video.path).readAsBytes(), filename: 'carImage'),
+          'media': MultipartFile(File(image.path).readAsBytes(),
+              filename: 'carImage'),
+          'media1': MultipartFile(File(video.path).readAsBytes(),
+              filename: 'carImage'),
           'company': company,
           'model': model,
           'year': year,
@@ -95,7 +99,9 @@ class CarApi extends APIRequestRepresentable {
   @override
   String get url => isplaceOrder == true
       ? '${APIEndpoint.baseApi}booking'
-      : APIEndpoint.baseApi + endpoint;
+      : isAdList == true
+          ? '${APIEndpoint.baseApi}ad'
+          : APIEndpoint.baseApi + endpoint;
 
   @override
   String get contentType => isplaceOrder ? "multipart/form-data" : '';

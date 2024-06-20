@@ -30,11 +30,8 @@ class LoginScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 20),
                 child: Image.asset(
                   'images/car_parts.png',
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width * .7,
                 ),
-              ),
-              const SizedBox(
-                height: 50,
               ),
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -85,6 +82,28 @@ class LoginScreen extends StatelessWidget {
                       !authController.isPasswordVisible.value,
                 ),
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+                onTap: () {
+                  Get.toNamed(RouteConstant.FORGETPASSWORDROUTE);
+                },
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: Text(
+                      "Forgot Password",
+                      style: subtitleStyle.copyWith(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline),
+                    ),
+                  ),
+                )),
+            SizedBox(
+              height: 10,
             ),
             Container(
                 margin:

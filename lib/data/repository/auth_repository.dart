@@ -7,12 +7,7 @@ abstract class AuthRepository {
       String phoneNumber,
       String name,
       String email,
-      String password,
-      String building,
-      String area,
-      String pincode,
-      String city,
-      String state,String alternateNumber);
+      String password, String alternateNumber);
 
   Future<LoginModel>? updateProfile(
       String phoneNumber,
@@ -25,4 +20,9 @@ abstract class AuthRepository {
       String state,String alternateNumber);
 
   Future<LoginModel>? getProfile();
+
+  Future<String>? forgetPassword(String email);
+  Future<String>? changePassword(String phone,String otp,String password);
+
+
 }

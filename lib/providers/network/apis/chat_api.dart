@@ -44,7 +44,6 @@ class ChatApi extends APIRequestRepresentable {
       case chatType.POST:
         return HTTPMethod.post;
     }
-
   }
 
   @override
@@ -59,12 +58,12 @@ class ChatApi extends APIRequestRepresentable {
   }
 
   @override
-  String get url{
+  String get url {
     switch (type) {
       case chatType.GET:
-        return'https://mdayurvediccollege.in/demo/autopart/api/chat/$id';
+        return APIEndpoint.baseApi + "chat/$id";
       case chatType.POST:
-        return 'https://mdayurvediccollege.in/demo/autopart/api/chat';
+        return APIEndpoint.baseApi+'chat';
     }
   }
 

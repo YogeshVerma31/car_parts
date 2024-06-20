@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:car_parts/data/model/ad_model.dart';
 import 'package:car_parts/data/model/car_brand_model.dart';
 import 'package:car_parts/data/model/car_model.dart';
 import 'package:car_parts/data/repository/car_repository.dart';
@@ -8,14 +9,23 @@ import 'package:car_parts/providers/network/apis/car_api.dart';
 class CarRepositoryImpl extends CarRepository {
   @override
   Future<CarBrandModel>? getCarBrand() async {
-    final response = await CarApi(isplaceOrder: false).request();
+    final response =
+        await CarApi(isAdList: false, isplaceOrder: false).request();
     return CarBrandModel.fromJson(response);
   }
 
   @override
   Future<CarModel>? getCarById(String id) async {
-    final response = await CarApi(id: id, isplaceOrder: false).request();
+    final response =
+        await CarApi(isAdList: false, id: id, isplaceOrder: false).request();
     return CarModel.fromJson(response);
+  }
+
+  @override
+  Future<AdModel>? getAdList() async {
+    final response =
+        await CarApi(isAdList: true, isplaceOrder: false).request();
+    return AdModel.fromJson(response);
   }
 
   @override
@@ -49,7 +59,8 @@ class CarRepositoryImpl extends CarRepository {
             video: video,
             company: company,
             model: model,
-            year: year)
+            year: year,
+            isAdList: false)
         .request();
     return response;
   }

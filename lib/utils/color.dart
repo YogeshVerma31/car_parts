@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
-const Color primaryColor = Color(0xFFcdece9);
+
+const Color primaryColor = Color(0xFF007DFE);
+const Color primaryLightColor = Color(0xFFDFECFF);
 const Color textColorGreen = Color(0xFF01B8A6);
 const Color textColorDarkGreen = Color(0xFF029F8E);
 const Color textColorGrey = Color(0xFF6A6A6A);
 const Color borderColor = Color(0xFFDCDCDC);
 const Color greenColor = textColorGreen;
-const Color lightGreenColor = Color(0xFF8CE3DB);
-const Color greyColor = Color(0xFFACACAC);
+const Color lightGreenColor = Color(0xFFBEF1E8);
+  const Color greyColor = Color(0xFFACACAC);
 const Color greyColor50 = Color(0xFFE1E1E1);
+const Color greyColor100 = Color(0xFFD2D2D2);
+
 const Color greyColor500 = Color(0xFF878787);
 const Color greyColor400 = Color(0xFF9E9E9E);
 const Color greyColor600 = Color(0xFF676767);

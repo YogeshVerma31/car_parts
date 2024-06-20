@@ -5,6 +5,7 @@ class RouteConstant{
   static const SIGNUPROUTE = "/signup";
   static const placeOrder = "/placeOrder";
   static const myOrder = "/myOrder";
+  static const otpVerification = "/otpVerification";
   static const myProfile = "/myProfile";
   static const FORGETPASSWORDROUTE = "/forgetpassword";
   static const RESETPASSWORDROUTE = "/resetpassword";

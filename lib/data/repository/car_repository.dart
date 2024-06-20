@@ -1,10 +1,14 @@
 import 'package:car_parts/data/model/car_brand_model.dart';
 import 'package:car_parts/data/model/car_model.dart';
 
+import '../model/ad_model.dart';
+
 abstract class CarRepository {
   Future<CarBrandModel>? getCarBrand();
 
   Future<CarModel>? getCarById(String id);
+
+  Future<AdModel>? getAdList();
 
   Future<dynamic>? placeOrder(
       String name,

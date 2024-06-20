@@ -3,7 +3,9 @@ import 'package:car_parts/common_ui/custom_button.dart';
 import 'package:car_parts/common_ui/custom_input_field.dart';
 import 'package:car_parts/controller/car_controller.dart';
 import 'package:car_parts/services/media_services_interface.dart';
+import 'package:car_parts/ui/refund_policy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../data/model/car_model.dart';
@@ -50,7 +52,17 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Place Orders'),
+        elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          // Status bar color
+          statusBarColor: primaryColor,
+          // Status bar brightness (optional)
+          statusBarIconBrightness: Brightness.light,
+          // For Android (dark icons)
+          statusBarBrightness: Brightness.light, // For iOS (dark icons)
+        ),
+        backgroundColor: primaryColor,
+        title: Text('Order request'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,90 +77,90 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   Widget get placeOrderForm => Center(
         child: Column(
           children: [
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.nameController,
+            //       title: "Name",
+            //       hint: "Enter Name Number",
+            //       readOnly: false),
+            // ),
             Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.nameController,
-                  title: "Name",
-                  hint: "Enter Name Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
+              padding: const EdgeInsets.only(left: 10.0, right: 10),
               child: CustomInputField(
                   controller: carController.phoneController,
                   title: "Phone Number",
                   hint: "Enter Phone Number",
                   readOnly: false),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  widget: Image.asset(
-                    'images/whatsapp.png',
-                    color: Colors.green,
-                    width: 30,
-                  ),
-                  controller: carController.alternatePhoneController,
-                  title: "Alternate Number",
-                  hint: "Enter Alternate Number",
-                  textInputType: TextInputType.phone,
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.emailController,
-                  title: "Email",
-                  hint: "Enter Email Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.buildingController,
-                  title: "Building",
-                  hint: "Enter Building Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.areaController,
-                  title: "Area",
-                  hint: "Enter Area Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.pinCodeController,
-                  title: "Pincode",
-                  hint: "Enter Pincode Number",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.cityController,
-                  title: "City",
-                  hint: "Enter City",
-                  readOnly: false),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       widget: Image.asset(
+            //         'images/whatsapp.png',
+            //         color: Colors.green,
+            //         width: 30,
+            //       ),
+            //       controller: carController.alternatePhoneController,
+            //       title: "Alternate Number",
+            //       hint: "Enter Alternate Number",
+            //       textInputType: TextInputType.phone,
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.emailController,
+            //       title: "Email",
+            //       hint: "Enter Email Number",
+            //       readOnly: false),
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10),
               child: CustomInputField(
-                  controller: carController.stateController,
-                  title: "State",
-                  hint: "Enter State",
+                  controller: carController.buildingController,
+                  title: "Full Address",
+                  hint: "Enter Full Address",
                   readOnly: false),
             ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.areaController,
+            //       title: "Area",
+            //       hint: "Enter Area Number",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.pinCodeController,
+            //       title: "Pincode",
+            //       hint: "Enter Pincode Number",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.cityController,
+            //       title: "City",
+            //       hint: "Enter City",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.stateController,
+            //       title: "State",
+            //       hint: "Enter State",
+            //       readOnly: false),
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10),
               child: CustomInputField(
                   controller: carController.shortDescController,
-                  title: "Short Description",
-                  hint: "Enter Short Description",
+                  title: "Parts Details",
+                  hint: "Enter Parts Details",
                   readOnly: false),
             ),
             Padding(
@@ -180,7 +192,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                       },
                       child: Obx(() => carController.imageFileImages.isEmpty
                           ? Center(
-                              child: Text('Select Image',
+                              child: Text('Select Images',
                                   style: headingStyle.copyWith(
                                       color: Colors.black, fontSize: 16)),
                             )
@@ -188,106 +200,134 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                               children: carController.imageFileImages
                                   .map((element) => Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Image.file(
-                                          File(element.path),
-                                          fit: BoxFit.fill,
-                                          height: 200,
+                                        child: Stack(
+                                          children: [
+                                            Image.file(
+                                              File(element.path),
+                                              fit: BoxFit.fill,
+                                              height: 200,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                carController.imageFileImages
+                                                    .removeAt(carController
+                                                        .imageFileImages
+                                                        .indexOf(element));
+                                              },
+                                              child: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30)),
+                                                    child: const Icon(
+                                                      Icons.cancel_outlined,
+                                                      color: Colors.red,
+                                                      size: 30,
+                                                    ),
+                                                  )),
+                                            ),
+                                          ],
                                         ),
-                                      )).toList())),
+                                      ))
+                                  .toList())),
                     ),
                   )
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10, top: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      "Upload Video",
-                      style: titleStyle.copyWith(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: borderColor, width: 1.0),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        carController.getPhoto(
-                            menuOptions.gallery, false, context);
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Obx(
-                                  () => carController.videoFileName.value == ''
-                                      ? Center(
-                                          child: Text(
-                                          'Select Video',
-                                          style: headingStyle.copyWith(
-                                              color: Colors.black,
-                                              fontSize: 16),
-                                        ))
-                                      : Image.file(
-                                          File(carController.imageVideo),
-                                          fit: BoxFit.contain,
-                                        )))
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.companyDescController,
-                  title: "Company",
-                  hint: "Company",
-                  readOnly: true),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.modelDescController,
-                  title: "Model",
-                  hint: "Model",
-                  readOnly: true),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.fuelTypeController,
-                  title: "Car Fuel Type (Ex. Petrol, Diesel and CNG)",
-                  hint: "Enter Car Fuel Type",
-                  readOnly: false),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10),
-              child: CustomInputField(
-                  controller: carController.yearDescController,
-                  title: "Year or Car Purchase",
-                  hint: "Enter Year or Car Purchase",
-                  readOnly: false),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10, top: 15),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Container(
+            //         margin: const EdgeInsets.only(left: 15),
+            //         child: Text(
+            //           "Upload Video",
+            //           style: titleStyle.copyWith(
+            //               color: Colors.black,
+            //               fontWeight: FontWeight.w500,
+            //               fontSize: 14),
+            //         ),
+            //       ),
+            //       Container(
+            //         width: MediaQuery.of(context).size.width * .5,
+            //         height: 200,
+            //         decoration: BoxDecoration(
+            //           color: Colors.white,
+            //           border: Border.all(color: borderColor, width: 1.0),
+            //           borderRadius: BorderRadius.circular(6),
+            //         ),
+            //         child: GestureDetector(
+            //           onTap: () {
+            //             carController.getPhoto(
+            //                 menuOptions.gallery, false, context);
+            //           },
+            //           child: Row(
+            //             children: [
+            //               Expanded(
+            //                   child: Obx(
+            //                       () => carController.videoFileName.value == ''
+            //                           ? Center(
+            //                               child: Text(
+            //                               'Select Video',
+            //                               style: headingStyle.copyWith(
+            //                                   color: Colors.black,
+            //                                   fontSize: 16),
+            //                             ))
+            //                           : Image.file(
+            //                               File(carController.imageVideo),
+            //                               fit: BoxFit.contain,
+            //                             )))
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.companyDescController,
+            //       title: "Company",
+            //       hint: "Company",
+            //       readOnly: true),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.modelDescController,
+            //       title: "Model",
+            //       hint: "Model",
+            //       readOnly: true),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.fuelTypeController,
+            //       title: "Car Fuel Type (Ex. Petrol, Diesel and CNG)",
+            //       hint: "Enter Car Fuel Type",
+            //       readOnly: false),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0, right: 10),
+            //   child: CustomInputField(
+            //       controller: carController.yearDescController,
+            //       title: "Year or Car Purchase",
+            //       hint: "Enter Year or Car Purchase",
+            //       readOnly: false),
+            // ),
+            _showPrivacyPolicy(),
             Obx(() => Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: CustomButton(
                     isProgressBar: carController.isLoading.value,
-                    label: 'Place Order',
+                    label: 'Start Chat',
                     onTap: () {
                       carController.checkSignUpValidation();
                     },
@@ -298,4 +338,22 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
           ],
         ),
       );
+
+  _showPrivacyPolicy() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Checkbox(
+          value: true,
+          onChanged: (newValue) {},
+        ),
+        InkWell(
+            onTap: () {
+              Get.to(() => RefundPolicyScreen());
+            },
+            child: Text("I Agree to Return, Refund and Cancellation Policy"))
+      ],
+    );
+  }
 }

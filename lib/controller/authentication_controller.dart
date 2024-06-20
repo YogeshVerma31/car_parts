@@ -26,6 +26,11 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
   var isButtonLoading = false.obs;
 
+  static final RegExp nameRegExp = RegExp(r"^[a-zA-Z]+$");
+  var phoneRegExp = RegExp(r'^(?:[+0][1-9])?[0-9]{10,12}$');
+  final passwordRegex =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+
   @override
   void onInit() {
     super.onInit();
@@ -64,43 +69,30 @@ class AuthController extends GetxController {
   // }
   //
   void checkSignUpValidation() {
-    if (nameController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Name should not be empty!");
-    } else if (phoneController.text.isEmpty) {
+    if (nameController.text.isEmpty &&
+        !nameRegExp.hasMatch(nameController.text)) {
+      Fluttertoast.showToast(
+          msg: "Name should not be empty! or name is invalid");
+    } else if (!phoneRegExp.hasMatch(phoneController.text)) {
       Fluttertoast.showToast(
           msg: "phone should not be empty or less than 10 digit");
       return;
-    }else if (alternatePhoneController.text.isEmpty) {
+    } else if (!phoneRegExp.hasMatch(alternatePhoneController.text)) {
       Fluttertoast.showToast(
           msg: "alternate number should not be empty or less than 10 digit");
       return;
-    }
-    else if (passwordController.text.isEmail) {
-      Fluttertoast.showToast(msg: "password is Not valid!");
+    } else if (!emailController.text.isEmail) {
+      Fluttertoast.showToast(msg: "Email is not correct!");
       return;
-    } else if (confirmPasswordController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Confirm Password should not be empty!");
+    } else if (passwordController.text.length < 8) {
+      Fluttertoast.showToast(msg: "password should be greater than 8 length!");
       return;
-    } else if (!(passwordController.text == confirmPasswordController.text)) {
+    } else if (confirmPasswordController.text.length < 8) {
+      Fluttertoast.showToast(
+          msg: "Confirm Password should be greater than 8 length!");
+      return;
+    } else if (passwordController.text != confirmPasswordController.text) {
       Fluttertoast.showToast(msg: "password not match");
-      return;
-    } else if (buildingController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "building should not be empty!");
-      return;
-    } else if (areaController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Area should not be empty!");
-      return;
-    } else if (pinCodeController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Area should not be empty!");
-      return;
-    } else if (pinCodeController.text.length < 6) {
-      Fluttertoast.showToast(msg: "Pincode should not be less than 6");
-      return;
-    } else if (cityController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "City should not be empty!");
-      return;
-    } else if (stateController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "State̵ should not be empty!");
       return;
     } else {
       doSafeSignUp();
@@ -118,29 +110,31 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(
           msg: "alternate number should not be empty or less than 10 digit");
       return;
-    }else if (buildingController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "building should not be empty!");
-      return;
-    } else if (areaController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Area should not be empty!");
-      return;
-    } else if (pinCodeController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Area should not be empty!");
-      return;
-    } else if (pinCodeController.text.length < 6) {
-      Fluttertoast.showToast(msg: "Pincode should not be less than 6");
-      return;
-    } else if (cityController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "City should not be empty!");
-      return;
-    } else if (stateController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "State̵ should not be empty!");
-      return;
-    } else {
+    }
+    // } else if (buildingController.text.isEmpty) {
+    //   Fluttertoast.showToast(msg: "building should not be empty!");
+    //   return;
+    // } else if (areaController.text.isEmpty) {
+    //   Fluttertoast.showToast(msg: "Area should not be empty!");
+    //   return;
+    // } else if (pinCodeController.text.isEmpty) {
+    //   Fluttertoast.showToast(msg: "Area should not be empty!");
+    //   return;
+    // } else if (pinCodeController.text.length < 6) {
+    //   Fluttertoast.showToast(msg: "Pincode should not be less than 6");
+    //   return;
+    // } else if (cityController.text.isEmpty) {
+    //   Fluttertoast.showToast(msg: "City should not be empty!");
+    //   return;
+    // } else if (stateController.text.isEmpty) {
+    //   Fluttertoast.showToast(msg: "State̵ should not be empty!");
+    //   return;
+    // }
+
+    else {
       doSafeUpdateProfile();
     }
   }
-
 
   Future<void> doSafeLogin() async {
     isLoading(true);
@@ -152,6 +146,7 @@ class AuthController extends GetxController {
       Get.offAllNamed(RouteConstant.HOMEROUTE);
       SharedPreference().putString("email", loginResponse.data!.email!);
       SharedPreference().putString("name", loginResponse.data!.name!);
+      SharedPreference().putString("number", loginResponse.data!.phone!);
       Fluttertoast.showToast(msg: loginResponse.message!);
     } on FetchDataException catch (exception) {
       isLoading(false);
@@ -173,23 +168,60 @@ class AuthController extends GetxController {
     isLoading(true);
     try {
       final signUpResponse = await _authRepository.signUp(
-        phoneController.text,
-        nameController.text,
-        emailController.text,
-        passwordController.text,
-        buildingController.text,
-        areaController.text,
-        pinCodeController.text,
-        cityController.text,
-        stateController.text,
-        alternatePhoneController.text
-      );
+          phoneController.text,
+          nameController.text,
+          emailController.text,
+          passwordController.text,
+          alternatePhoneController.text);
       isLoading(false);
       putToken(signUpResponse!.data!.token!);
       SharedPreference().putString("email", signUpResponse.data!.email!);
       SharedPreference().putString("name", signUpResponse.data!.name!);
+      SharedPreference().putString("number", signUpResponse.data!.phone!);
       Fluttertoast.showToast(msg: signUpResponse.message!);
       Get.offAllNamed(RouteConstant.HOMEROUTE);
+    } on FetchDataException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on BadRequestException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on UnauthorisedException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    }
+  }
+
+  Future<void> doSafeSendPassword(String email) async {
+    isLoading(true);
+    try {
+      final signUpResponse = await _authRepository.forgetPassword(email);
+      isLoading(false);
+      Fluttertoast.showToast(msg: signUpResponse);
+      Get.toNamed(RouteConstant.otpVerification, parameters: {"phone": email});
+      // Get.offAllNamed(RouteConstant.);
+    } on FetchDataException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on BadRequestException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on UnauthorisedException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    }
+  }
+
+  Future<void> doSafeChangePassword(
+      String phone, String otp, String password) async {
+    isLoading(true);
+    try {
+      final signUpResponse =
+          await _authRepository.changePassword(phone, otp, password);
+      isLoading(false);
+      Fluttertoast.showToast(msg: signUpResponse!);
+      Get.offAllNamed(RouteConstant.SIGINROUTE);
+      // Get.offAllNamed(RouteConstant.);
     } on FetchDataException catch (exception) {
       isLoading(false);
       Fluttertoast.showToast(msg: exception.details.toString());
@@ -228,20 +260,20 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(msg: exception.details.toString());
     }
   }
+
   Future<void> doSafeUpdateProfile() async {
     isButtonLoading(true);
     try {
       final signUpResponse = await _authRepository.updateProfile(
-        phoneController.text,
-        nameController.text,
-        emailController.text,
-        buildingController.text,
-        areaController.text,
-        pinCodeController.text,
-        cityController.text,
-        stateController.text,
-        alternatePhoneController.text
-      );
+          phoneController.text,
+          nameController.text,
+          emailController.text,
+          buildingController.text,
+          areaController.text,
+          pinCodeController.text,
+          cityController.text,
+          stateController.text,
+          alternatePhoneController.text);
       isButtonLoading(false);
       Fluttertoast.showToast(msg: "Profile Updated Successfully");
     } on FetchDataException catch (exception) {
@@ -255,9 +287,6 @@ class AuthController extends GetxController {
       Fluttertoast.showToast(msg: exception.details.toString());
     }
   }
-
-
-
 
 // Future<void> initiateFacebookLogin() async {
 //   final loginResult = await FacebookAuth.instance.login();

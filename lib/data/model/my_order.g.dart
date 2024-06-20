@@ -39,13 +39,19 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       year: json['year'] as String?,
       added_on: json['added_on'] as String?,
       model: json['model'] as String?,
+      orderId: json['orderId'] as String?,
       company: json['company'] as String?,
       user_id: json['user_id'] as String?,
+      product_price: json['product_price'] as String?,
+      shippingid: json['shippingid'] as String?,
+      shipimage: json['shipimage'] as String?,
+      shippingcompany: json['shippingcompany'] as String?,
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
+      'orderId': instance.orderId,
       'phone': instance.phone,
       'pincode': instance.pincode,
       'area': instance.area,
@@ -62,4 +68,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'user_id': instance.user_id,
       'added_on': instance.added_on,
       'status': instance.status,
+      'product_price': instance.product_price,
+      'shippingid': instance.shippingid,
+      'shipimage': instance.shipimage,
+      'shippingcompany': instance.shippingcompany,
     };

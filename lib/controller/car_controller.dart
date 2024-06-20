@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:car_parts/constants/app_constants.dart';
+import 'package:car_parts/data/model/ad_model.dart';
 import 'package:car_parts/data/model/car_brand_model.dart';
 import 'package:car_parts/data/model/car_model.dart';
 import 'package:car_parts/data/repository/auth_repository_impl.dart';
 import 'package:car_parts/data/repository/car_repository_impl.dart';
+import 'package:car_parts/ui/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -15,15 +17,69 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../data/sharedPreference/shared_preference.dart';
+import '../providers/network/api_endpoint.dart';
 import '../providers/network/api_provider.dart';
 import '../services/media_services.dart';
 import '../services/media_services_interface.dart';
 import 'authentication_controller.dart';
 
 class CarController extends GetxController {
+  PageController? pageController,carBrandController;
+
+  var selectedPage = 0.obs;
+  var selectedCarBrandPage = 0.obs;
+
+  final _adItems = <AdModelList>[];
+
+  get getAdList => _adItems.obs;
+  Timer? _timer,_carBrandTimer;
+
   @override
   void onInit() {
+    pageController = PageController(initialPage: selectedPage.value);
+    _timer = Timer.periodic(const Duration(seconds: 3), (time) async {
+      var selectedPage = (pageController?.page?.toInt() ?? 0) + 1;
+      if (selectedPage == _adItems.length) {
+        selectedPage = 0;
+      }
+      await pageController?.animateToPage(
+        selectedPage,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
+    });
+
+
     super.onInit();
+  }
+
+  void startCarBrandAd(){
+    carBrandController = PageController(initialPage: selectedCarBrandPage.value);
+    _carBrandTimer = Timer.periodic(const Duration(seconds: 3), (time) async {
+      var selectedPage = (carBrandController?.page?.toInt() ?? 0) + 1;
+      if (selectedPage == _adItems.length) {
+        selectedPage = 0;
+      }
+      await carBrandController?.animateToPage(
+        selectedPage,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    _carBrandTimer?.cancel();
+    super.onClose();
+  }
+
+  void pageChanged(int currentPage) {
+    print("current page $currentPage");
+
+    print("selected page $selectedPage");
+    update();
   }
 
   var isLoading = false.obs;
@@ -89,8 +145,27 @@ class CarController extends GetxController {
     isLoading(true);
     try {
       final carBrandResponse = await _carRepository.getCarBrand();
-      isLoading(false);
       carBrandList.addAll(carBrandResponse!.data!);
+      doFetchAdList();
+    } on FetchDataException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on BadRequestException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    } on UnauthorisedException catch (exception) {
+      isLoading(false);
+      Fluttertoast.showToast(msg: exception.details.toString());
+    }
+  }
+
+  Future<void> doFetchAdList() async {
+    _adItems.clear();
+    // isLoading(true);
+    try {
+      final adResponse = await _carRepository.getAdList();
+      isLoading(false);
+      _adItems.addAll(adResponse!.data!);
     } on FetchDataException catch (exception) {
       isLoading(false);
       Fluttertoast.showToast(msg: exception.details.toString());
@@ -108,8 +183,8 @@ class CarController extends GetxController {
     isLoading(true);
     try {
       final carBrandResponse = await _carRepository.getCarById(id);
-      isLoading(false);
       carByIdList.addAll(carBrandResponse!.data!);
+      doFetchAdList();
     } on FetchDataException catch (exception) {
       isLoading(false);
       Fluttertoast.showToast(msg: exception.details.toString());
@@ -169,41 +244,16 @@ class CarController extends GetxController {
       Fluttertoast.showToast(
           msg: "phone should not be empty or less than 10 digit");
       return;
-    } else if (!emailController.text.isEmail) {
-      Fluttertoast.showToast(msg: "Email is Not valid!");
-      return;
-    } else if (emailController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Email is Not Empty!");
-      return;
     } else if (buildingController.text.isEmpty) {
       Fluttertoast.showToast(msg: "building should not be empty!");
       return;
     } else if (areaController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Area should not be empty!");
       return;
-    } else if (pinCodeController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Area should not be empty!");
-      return;
-    } else if (pinCodeController.text.length < 6) {
-      Fluttertoast.showToast(msg: "Pincode should not be less than 6");
-      return;
-    } else if (cityController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "City should not be empty!");
-      return;
-    } else if (stateController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "State̵ should not be empty!");
-      return;
     } else if (imageFileImages.isEmpty) {
       Fluttertoast.showToast(msg: "Image should not be empty!");
       return;
-    } else if (yearDescController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Year should not be empty!");
-      return;
-    } else if (fuelTypeController.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Car Fuel Type is not Empty");
-      return;
-    }
-    else {
+    } else {
       createAndUploadFile();
     }
   }
@@ -211,8 +261,8 @@ class CarController extends GetxController {
   Future<dynamic> createAndUploadFile() async {
     isLoading(true);
     try {
-      final http.MultipartRequest request = http.MultipartRequest('POST',
-          Uri.parse('https://mdayurvediccollege.in/demo/autopart/api/booking'));
+      final http.MultipartRequest request = http.MultipartRequest(
+          'POST', Uri.parse(APIEndpoint.baseApi + '/booking'));
       for (int i = 0; i < imageFileImages.length; i++) {
         request.files.add(await http.MultipartFile.fromPath(
             'media[]', File(imageFileImages[i].path).path));
@@ -241,13 +291,13 @@ class CarController extends GetxController {
         'area': areaController.text,
         'city': cityController.text,
         'state': stateController.text,
-        'alt_phone':alternatePhoneController.text,
+        'alt_phone': alternatePhoneController.text,
         'pincode': pinCodeController.text,
         'sdescr': shortDescController.text,
         'company': companyDescController.text,
         'model': modelDescController.text,
         'year': yearDescController.text,
-        'type':fuelTypeController.text
+        'type': fuelTypeController.text
       });
       final res = await request.send();
       final response = await http.Response.fromStream(res);
@@ -259,7 +309,10 @@ class CarController extends GetxController {
       final result = json.decode(response.body);
       Fluttertoast.showToast(msg: result['message']);
       print(result['message']);
-      Get.back();
+      Get.off(() => ChatScreen(
+            orderNumber: result["data"]['orderId'],
+            orderStatus: result['data']['status'],
+          ));
       isLoading(false);
       return result;
     } on Exception catch (e) {

@@ -39,7 +39,7 @@ class OrderApi extends APIRequestRepresentable {
   }
 
   @override
-  String get url => 'https://mdayurvediccollege.in/demo/autopart/api/booking';
+  String get url => '${APIEndpoint.baseApi}booking';
 
   @override
   String get contentType => 'application/json';

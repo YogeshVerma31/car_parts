@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
         alignment: Alignment.center,
         height: 45,
         decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(8), color: color),
+        BoxDecoration(borderRadius: BorderRadius.circular(30), color: color),
         child: isProgressBar == true
             ? const Center(
           child: SizedBox(

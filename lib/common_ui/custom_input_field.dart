@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../utils/color.dart';
 import '../utils/styles.dart';
 
@@ -13,6 +11,8 @@ class CustomInputField extends StatelessWidget {
   final Color? labelColor;
   final bool? obscureText;
   final TextInputType? textInputType;
+  final Icon? leadingIcon;
+  final String? error;
   final Function()? onTap;
   final Function(String)? onTextChanged;
 
@@ -21,10 +21,12 @@ class CustomInputField extends StatelessWidget {
         required this.title,
         required this.hint,
         required this.readOnly,
+        this.leadingIcon,
         this.onTap,
         this.textInputType,
         this.controller,
         this.widget,
+        this.error,
         this.onTextChanged,
         this.obscureText,
         this.labelColor})
@@ -36,25 +38,16 @@ class CustomInputField extends StatelessWidget {
       margin: const EdgeInsets.only(top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 15),
-            child: Text(
-              title,
-              style: titleStyle.copyWith(
-                  color: labelColor ?? Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14),
-            ),
-          ),
-          Container(
             height: 47,
-            margin: const EdgeInsets.only(top: 8.0),
+            margin: const EdgeInsets.only(top: 1.0),
             padding: const EdgeInsets.only(left: 14),
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: borderColor, width: 1.0),
-              borderRadius: BorderRadius.circular(6),
+              color: primaryLightColor,
+              border: Border.all(color: primaryLightColor, width: 1.0),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: GestureDetector(
               onTap: onTap,
@@ -72,20 +65,22 @@ class CustomInputField extends StatelessWidget {
                         style: subtitleStyle.copyWith(color: Colors.black),
                         decoration: InputDecoration(
                             hintText: hint,
-                            hintStyle: subtitleStyle,
+                            icon: leadingIcon ?? const SizedBox.shrink(),
+                            hintStyle: subtitleStyle.copyWith(color: Colors.black),
+                            errorText: error,
                             focusedBorder: const UnderlineInputBorder(
                                 borderSide:
-                                BorderSide(color: borderColor, width: 0)),
+                                BorderSide(color: primaryLightColor, width: 0)),
                             enabledBorder: const UnderlineInputBorder(
-                                borderSide:
-                                BorderSide(color: borderColor, width: 0))),
+                                borderSide: BorderSide(
+                                    color: primaryLightColor, width: 0))),
                       )),
                   widget == null
                       ? Container()
                       : Container(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: widget,
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: InkWell(child: widget),
                     ),
                   )
                 ],

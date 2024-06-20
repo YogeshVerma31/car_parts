@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'my_order.g.dart';
 
 @JsonSerializable()
@@ -19,6 +20,7 @@ class MyOrderModel {
 class Data {
   String? id;
   String? email;
+  String? orderId;
   String? phone;
   String? pincode;
   String? area;
@@ -35,27 +37,36 @@ class Data {
   String? user_id;
   String? added_on;
   String? status;
+  String? product_price;
+  String? shippingcompany;
+  String? shippingid;
+  String? shipimage;
 
-
-  Data(
-      {this.id,
-      this.email,
-      this.phone,
-      this.pincode,
-      this.area,
-      this.building,
-      this.city,
-      this.sdescr,
-      this.media,
-      this.media1,
-        this.status,
-      this.name,
-      this.state,
-      this.year,
-        this.added_on,
-      this.model,
-      this.company,
-      this.user_id});
+  Data({
+    this.id,
+    this.email,
+    this.phone,
+    this.pincode,
+    this.area,
+    this.building,
+    this.city,
+    this.sdescr,
+    this.media,
+    this.media1,
+    this.status,
+    this.name,
+    this.state,
+    this.year,
+    this.added_on,
+    this.model,
+    this.orderId,
+    this.company,
+    this.product_price,
+    this.user_id,
+    this.shippingid,
+    this.shippingcompany,
+    this.shipimage,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
